@@ -10,6 +10,7 @@ import {
 } from '@blockstack/stacks-transactions';
 import RPCClient from '@stacks/rpc-client';
 import BigNumber from 'bignumber.js';
+import { Identity } from '@stacks/keychain';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
   switch (type) {
@@ -46,12 +47,44 @@ export const getRPCClient = () => {
 export const stacksValue = ({
   value,
   fixedDecimals = false,
+  withTicker = true,
 }: {
-  value: number;
+  value: number | string;
   fixedDecimals?: boolean;
+  withTicker?: boolean;
 }) => {
   const microStacks = new BigNumber(value);
   const stacks = microStacks.shiftedBy(-6);
   const stxString = fixedDecimals ? stacks.toFormat(6) : stacks.decimalPlaces(6).toFormat();
-  return `${stxString} STX`;
+  return `${stxString}${withTicker ? ' STX' : ''}`;
+};
+
+export function shortenHex(hex: string, length = 4) {
+  return `${hex.substring(0, length + 2)}…${hex.substring(hex.length - length)}`;
+}
+
+/**
+ * truncateMiddle
+ *
+ * @param {string} input - the string to truncate
+ * @param {number} offset - the number of chars to keep on either end
+ */
+export const truncateMiddle = (input: string, offset = 5): string => {
+  if (input.startsWith('0x')) {
+    return shortenHex(input, offset);
+  }
+  const start = input?.substr(0, offset);
+  const end = input?.substr(input.length - offset, input.length);
+  return `${start}…${end}`;
+};
+
+export const getIdentityDisplayName = (identity: Identity, truncate = false): string => {
+  if (identity.defaultUsername) {
+    return identity.defaultUsername;
+  }
+  const address = identity.getStxAddress();
+  if (truncate) {
+    return truncateMiddle(address);
+  }
+  return address;
 };

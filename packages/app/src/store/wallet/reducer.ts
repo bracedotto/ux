@@ -13,6 +13,7 @@ const initialState: WalletState = {
   isRestoringWallet: false,
   currentWallet: undefined,
   identities: [],
+  currentIdentityIndex: 0,
 };
 
 export const walletReducer: Reducer<WalletState, WalletActions> = (
@@ -45,5 +46,9 @@ export const walletReducer: Reducer<WalletState, WalletActions> = (
       };
     default:
       return state;
+    // return {
+    //   ...initialState,
+    //   ...state,
+    // };
   }
 };

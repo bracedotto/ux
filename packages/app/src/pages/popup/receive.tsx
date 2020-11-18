@@ -3,12 +3,14 @@ import { Box, Text, Button, useClipboard } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
+import { useWallet } from '@common/hooks/use-wallet';
 import { Toast } from '@components/toast';
 import QRCode from 'qrcode.react';
 
 export const PopupReceive: React.FC = () => {
+  const { currentIdentity } = useWallet();
   const { doChangeScreen } = useAnalytics();
-  const address = 'STEQ5X9YDTA5S2DMSAD56S0W3K3Y24Y06Z066SKA';
+  const address = currentIdentity.getStxAddress();
   const { onCopy, hasCopied } = useClipboard(address);
   return (
     <PopupContainer title="Receive" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
@@ -17,9 +19,11 @@ export const PopupReceive: React.FC = () => {
         <QRCode value={address} />
       </Box>
       <Box width="100%" mt="extra-loose" textAlign="center">
-        <Text fontSize={2} fontWeight="600" lineHeight="40px" display="block">
-          markmhendrickson.id
-        </Text>
+        {currentIdentity.defaultUsername ? (
+          <Text fontSize={2} fontWeight="600" lineHeight="40px" display="block">
+            markmhendrickson.id
+          </Text>
+        ) : null}
         <Text fontSize={1}>{address}</Text>
       </Box>
       <Box mt="extra-loose">

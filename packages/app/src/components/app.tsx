@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider, theme } from '@stacks/ui';
+import { ThemeProvider } from '@stacks/ui';
+import { theme } from '@stacks/ui-theme';
 import { Routes } from '@components/routes';
 import { HashRouter as Router } from 'react-router-dom';
 import { useMessagePong } from '@common/hooks/use-message-pong';

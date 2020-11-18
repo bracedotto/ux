@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, Text, Button, ArrowIcon, BoxProps } from '@stacks/ui';
+import { Box, Text, Button, ArrowIcon, BoxProps, Spinner } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
-import { AssetList } from '@components/popup/asset-list';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
+import { useWallet } from '@common/hooks/use-wallet';
+import { getIdentityDisplayName } from '@common/stacks-utils';
+import { AccountInfo } from '@components/popup/account-info';
 
 interface TxButtonProps extends BoxProps {
   variant: 'send' | 'receive';
@@ -35,12 +37,13 @@ const TxButton: React.FC<TxButtonProps> = ({ variant, onClick }) => {
 };
 
 export const PopupHome: React.FC = () => {
+  const { currentIdentity } = useWallet();
   const { doChangeScreen } = useAnalytics();
   return (
     <PopupContainer>
       <Box width="100%" mt="loose">
         <Text fontSize="24px" fontWeight="600" lineHeight="40px">
-          markmhendrickson.id
+          {getIdentityDisplayName(currentIdentity, true)}
         </Text>
       </Box>
       <Box width="100%" mt="loose">
@@ -49,7 +52,9 @@ export const PopupHome: React.FC = () => {
           <TxButton onClick={() => doChangeScreen(ScreenPaths.POPUP_RECEIVE)} variant="receive" />
         </Box>
       </Box>
-      <AssetList />
+      <React.Suspense fallback={<Spinner />}>
+        <AccountInfo />
+      </React.Suspense>
     </PopupContainer>
   );
 };

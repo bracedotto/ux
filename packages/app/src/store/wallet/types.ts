@@ -28,6 +28,7 @@ export interface WalletState {
   isRestoringWallet: boolean;
   currentWallet?: Wallet;
   identities: Identity[];
+  currentIdentityIndex: number;
 }
 
 export type WalletActions =

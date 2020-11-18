@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Box, Flex, Text, BoxProps } from '@stacks/ui';
 import { TokenAssets } from '@components/popup/token-assets';
 import { CollectibleAssets } from '@components/popup/collectible-assets';
+import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 
 type Tab = 'tokens' | 'collectibles';
 
-export const AssetList: React.FC = () => {
+interface AssetListProps {
+  balances: AddressBalanceResponse;
+}
+export const AssetList: React.FC<AssetListProps> = ({ balances }) => {
   const [currentTab, setCurrentTab] = useState<Tab>('tokens');
 
   const getTabStyles = (tab: Tab): BoxProps => {
@@ -41,8 +45,11 @@ export const AssetList: React.FC = () => {
         <TabHeader tab="tokens" />
         <TabHeader tab="collectibles" />
       </Flex>
-      <TokenAssets display={currentTab === 'tokens' ? 'block' : 'none'} />
-      <CollectibleAssets display={currentTab === 'collectibles' ? 'block' : 'none'} />
+      <TokenAssets display={currentTab === 'tokens' ? 'block' : 'none'} balances={balances} />
+      <CollectibleAssets
+        display={currentTab === 'collectibles' ? 'block' : 'none'}
+        balances={balances}
+      />
     </Flex>
   );
 };
