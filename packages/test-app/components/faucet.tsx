@@ -21,14 +21,6 @@ export const Faucet = ({ address: _address = '' }: { address: string }) => {
     setAddress(evt.currentTarget.value || '');
   };
 
-  const getServerURL = () => {
-    const { origin } = location;
-    if (origin.includes('localhost')) {
-      return 'http://localhost:3999';
-    }
-    return 'https://stacks-node-api.blockstack.org';
-  };
-
   const waitForBalance = async (currentBalance: number, attempts: number) => {
     const { balance } = await client.fetchAccount(address);
     if (attempts > 18) {
@@ -53,7 +45,7 @@ export const Faucet = ({ address: _address = '' }: { address: string }) => {
     setTX('');
 
     try {
-      const url = `${getServerURL()}/extended/v1/debug/faucet?address=${address}`;
+      const url = `${getRPCClient()}/extended/v1/debug/faucet?address=${address}`;
       const res = await fetch(url, {
         method: 'POST',
       });

@@ -32,6 +32,7 @@
     "@stacks/rpc-client": "^0.8.1",
     "blockstack": "21.0.0",
     "dayjs": "^1.8.29",
+    "dotenv": "^8.2.0",
     "formik": "^2.1.4",
     "mdi-react": "^7.0.0",
     "preact": "^10.4.0",
