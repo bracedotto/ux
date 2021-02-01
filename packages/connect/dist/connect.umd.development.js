@@ -184,7 +184,7 @@
       return true;
     }
 
-    if (/safari/i.test(ua)) {
+    if (/Mac OS X/.test(ua) && /Safari/.test(ua) && !/Chrome/.test(ua) && !/Firefox/.test(ua)) {
       return true;
     }
 
