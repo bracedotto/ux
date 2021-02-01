@@ -46,7 +46,7 @@ export const isMobile = () => {
   if (/iPad|iPhone|iPod/.test(ua)) {
     return true;
   }
-  if (/safari/i.test(ua)) {
+  if (/Mac OS X/.test(ua) && /Safari/.test(ua) && !/Chrome/.test(ua) && !/Firefox/.test(ua)) {
     return true;
   }
   if (/windows phone/i.test(ua)) {
